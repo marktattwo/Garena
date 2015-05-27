@@ -217,6 +217,5 @@
         </tbody>
       </table>
     </div>
-    <h1><?php print($data)?></h1>
   </body>
 </html>
