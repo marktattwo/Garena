@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <title>Table</title>
     <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="DataTables-1.10.7/media/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="css/responsive.css">
   </head>
   <body>
 

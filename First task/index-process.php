@@ -24,7 +24,25 @@
     <meta charset="utf-8">
     <title>Table</title>
     <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/main.css">
+    <!-- <link rel="stylesheet" href="css/main.css">  -->
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="DataTables-1.10.7/media/css/jquery.dataTables.css">
+      
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="DataTables-1.10.7/media/js/jquery.js"></script>
+      
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+
+    <script>
+      $(document).ready( function () {
+        $('#my_table').DataTable();
+      } );
+    </script>
+
+    <link rel="stylesheet" href="css/responsive.css">
+
+    
   </head>
   <body>
 
@@ -109,7 +127,7 @@
       Table div
     -->
     <div id="table_div">
-      <table border="1" align="center">
+      <table border="1" align="center" id="my_table">
         <thead id="table_header">
           <tr>
             <th>No.</th>
