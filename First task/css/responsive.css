@@ -1,3 +1,7 @@
+body {
+  min-width: 1000px;
+}
+
 @media screen and (max-width: 1365px) {
   /**********************************
   HEADER
@@ -6,19 +10,20 @@
     width: 47.5%;
     margin: 30px 0 30px;
     float: left;
+    text-align: center;
   }
 
-  #start_date {
+  #start_date_div {
     text-align: right;
     margin-right: 5%;
   }
 
-  #end_date {
+  #end_date_div {
     text-align: left;
   }
 
   #product_div {
-    width: 62.5%;
+    width: 65%;
     margin: 33px 5% 27px 0;
     margin-right: 5%;
     text-align: right;
@@ -26,7 +31,107 @@
   }
 
   #button_div {
-    width: 32.5%;
+    width: 30%;
+    margin: 30px 0 30px;
+    text-align: left;
+    float: left;
+  }
+}
+
+@media screen and (max-width: 1292px) {
+  /**********************************
+  HEADER
+  ***********************************/
+  #product_div {
+    width: 66%;
+    margin: 33px 5% 27px 0;
+    margin-right: 5%;
+    text-align: right;
+    float: left;
+  }
+
+  #button_div {
+    width: 29%;
+    margin: 30px 0 30px;
+    text-align: left;
+    float: left;
+  }
+}
+
+@media screen and (max-width: 1219px) {
+  /**********************************
+  HEADER
+  ***********************************/
+  #product_div {
+    width: 67%;
+    margin: 33px 5% 27px 0;
+    margin-right: 5%;
+    text-align: right;
+    float: left;
+  }
+
+  #button_div {
+    width: 28%;
+    margin: 30px 0 30px;
+    text-align: left;
+    float: left;
+  }
+}
+
+@media screen and (max-width: 1146px) {
+  /**********************************
+  HEADER
+  ***********************************/
+  #product_div {
+    width: 68%;
+    margin: 33px 5% 27px 0;
+    margin-right: 5%;
+    text-align: right;
+    float: left;
+  }
+
+  #button_div {
+    width: 27%;
+    margin: 30px 0 30px;
+    text-align: left;
+    float: left;
+  }
+}
+
+@media screen and (max-width: 1073px) {
+  /**********************************
+  HEADER
+  ***********************************/
+  #product_div {
+    width: 69%;
+    margin: 33px 5% 27px 0;
+    margin-right: 5%;
+    text-align: right;
+    float: left;
+  }
+
+  #button_div {
+    width: 26%;
+    margin: 30px 0 30px;
+    text-align: left;
+    float: left;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  /**********************************
+  HEADER
+  ***********************************/
+  #product_div {
+    width: 70%;
+    margin: 33px 5% 27px 0;
+    margin-right: 5%;
+    text-align: right;
+    float: left;
+  }
+
+  #button_div {
+    width: 25%;
     margin: 30px 0 30px;
     text-align: left;
     float: left;

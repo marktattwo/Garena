@@ -1,3 +1,16 @@
+<?php 
+	mb_internal_encoding("UTF-8"); 
+?>
+<?php
+	//for exporting
+	$data_array=[];
+	$my_row=[];
+	$empty_row=[];
+	$num_row=0;
+	$file_name=time();
+?>
+
+
 <?php
 session_start();
 include 'config/config.php';
@@ -179,6 +192,65 @@ GROUP BY retailer_tab.id
 	$Retailer_List = mysql_query($sql,$conn_sg) or die(mysql_error()); 
 
 	}
+
+
+	/**************************
+		start adding my code here
+	**************************/
+	function export_xlsx()	{
+		// load library
+		require 'PHPExcel.php';
+		//do stuff
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->setActiveSheetIndex(0);
+		$rowCount = 1;
+		global $num_row;
+		global $data_array;
+		global $file_name;
+
+		for($i = 0; $i < $num_row; $i++){
+			$j = $i + 1;
+			$objPHPExcel->getActiveSheet()->SetCellValue('A'.$j, $data_array[$i][0]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('B'.$j, $data_array[$i][1]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('C'.$j, $data_array[$i][2]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('D'.$j, $data_array[$i][3]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('E'.$j, $data_array[$i][4]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('F'.$j, $data_array[$i][5]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('G'.$j, $data_array[$i][6]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('H'.$j, $data_array[$i][7]);
+			// $objPHPExcel->getActiveSheet()->SetCellValue('I'.$j, $data_array[$i][8]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('J'.$j, $data_array[$i][9]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('K'.$j, $data_array[$i][10]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('L'.$j, $data_array[$i][11]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('M'.$j, $data_array[$i][12]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('N'.$j, $data_array[$i][13]);
+		}
+
+	// // for exporting
+	// $objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowCount, "ID");
+	// $objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowCount, "First Name");
+	// $objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowCount, "Last Name");
+	// $objPHPExcel->getActiveSheet()->SetCellValue('D'.$rowCount, "Registation Date");
+	// $objPHPExcel->getActiveSheet()->SetCellValue('E'.$rowCount, "GIRO");
+	// $objPHPExcel->getActiveSheet()->SetCellValue('F'.$rowCount, "No. of PC(All Cafes)");
+	// $objPHPExcel->getActiveSheet()->SetCellValue('G'.$rowCount, "Billing Active PCs");
+	// $objPHPExcel->getActiveSheet()->SetCellValue('H'.$rowCount, "Disk/Update Active PCs");
+	// $objPHPExcel->getActiveSheet()->SetCellValue('I'.$rowCount, "Remarks");
+	// $objPHPExcel->getActiveSheet()->SetCellValue('J'.$rowCount, "Sales 3 month");
+	// $objPHPExcel->getActiveSheet()->SetCellValue('K'.$rowCount, "Sales 2 month");
+	// $objPHPExcel->getActiveSheet()->SetCellValue('L'.$rowCount, "Sales 1 month");
+	// $objPHPExcel->getActiveSheet()->SetCellValue('M'.$rowCount, "Average Sales");
+	// $objPHPExcel->getActiveSheet()->SetCellValue('N'.$rowCount, "Province");
+	// $rowCount++;
+		
+		//$file_name=$_POST["retailer"].time();
+		//$file_name=time();
+		$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+		$objWriter->save('output/'.$file_name.'.xlsx');
+	}
+
+
+
 ?>
 <html lang="en">
 <head>
@@ -297,8 +369,21 @@ Refund Status :
 </center>
 <br>
 
+<!--click to call export function-->
+<!---->
+<!---->
+
+<a href="#" onclick="genXlsx">Gen xlsx File</a>
+<br>
+
+<!---->
+<!---->
+<!---->
+<!---->
+
+
 <div id="export_div">
-      <?php echo "<a href='download.php?f=output_file.xlsx'><div class='buttonlink'><p>Export to xlsx</p></div></a>"; ?>
+      <?php echo "<a href='download.php?f=".$file_name.".xlsx'><div class='buttonlink'><p>Download</p></div></a>"; ?>
 </div>
 
 <?php
@@ -329,32 +414,50 @@ $month = "3";
 $refunded_list  = array();
 $value_list  = array();
 
-/***********************
-	For Export
-***********************/
-// load library
-require 'PHPExcel.php';
-//do stuff
-$objPHPExcel = new PHPExcel();
-$objPHPExcel->setActiveSheetIndex(0);
-$rowCount = 1;
+// /***********************
+// 	For Export
+// ***********************/
+// // load library
+// require 'PHPExcel.php';
+// //do stuff
+// $objPHPExcel = new PHPExcel();
+// $objPHPExcel->setActiveSheetIndex(0);
+// $rowCount = 1;
 
-// for exporting
-$objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowCount, "ID");
-$objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowCount, "First Name");
-$objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowCount, "Last Name");
-$objPHPExcel->getActiveSheet()->SetCellValue('D'.$rowCount, "Registation Date");
-$objPHPExcel->getActiveSheet()->SetCellValue('E'.$rowCount, "GIRO");
-$objPHPExcel->getActiveSheet()->SetCellValue('F'.$rowCount, "No. of PC(All Cafes)");
-$objPHPExcel->getActiveSheet()->SetCellValue('G'.$rowCount, "Billing Active PCs");
-$objPHPExcel->getActiveSheet()->SetCellValue('H'.$rowCount, "Disk/Update Active PCs");
-$objPHPExcel->getActiveSheet()->SetCellValue('I'.$rowCount, "Remarks");
-$objPHPExcel->getActiveSheet()->SetCellValue('J'.$rowCount, "Sales 3 month");
-$objPHPExcel->getActiveSheet()->SetCellValue('K'.$rowCount, "Sales 2 month");
-$objPHPExcel->getActiveSheet()->SetCellValue('L'.$rowCount, "Sales 1 month");
-$objPHPExcel->getActiveSheet()->SetCellValue('M'.$rowCount, "Average Sales");
-$objPHPExcel->getActiveSheet()->SetCellValue('N'.$rowCount, "Province");
-$rowCount++;
+// // for exporting
+// $objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowCount, "ID");
+// $objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowCount, "First Name");
+// $objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowCount, "Last Name");
+// $objPHPExcel->getActiveSheet()->SetCellValue('D'.$rowCount, "Registation Date");
+// $objPHPExcel->getActiveSheet()->SetCellValue('E'.$rowCount, "GIRO");
+// $objPHPExcel->getActiveSheet()->SetCellValue('F'.$rowCount, "No. of PC(All Cafes)");
+// $objPHPExcel->getActiveSheet()->SetCellValue('G'.$rowCount, "Billing Active PCs");
+// $objPHPExcel->getActiveSheet()->SetCellValue('H'.$rowCount, "Disk/Update Active PCs");
+// $objPHPExcel->getActiveSheet()->SetCellValue('I'.$rowCount, "Remarks");
+// $objPHPExcel->getActiveSheet()->SetCellValue('J'.$rowCount, "Sales 3 month");
+// $objPHPExcel->getActiveSheet()->SetCellValue('K'.$rowCount, "Sales 2 month");
+// $objPHPExcel->getActiveSheet()->SetCellValue('L'.$rowCount, "Sales 1 month");
+// $objPHPExcel->getActiveSheet()->SetCellValue('M'.$rowCount, "Average Sales");
+// $objPHPExcel->getActiveSheet()->SetCellValue('N'.$rowCount, "Province");
+// $rowCount++;
+	
+	$my_row[]="ID";
+	$my_row[]="First Name";
+	$my_row[]="Last Name";
+	$my_row[]="Registation Date";
+	$my_row[]="GIRO";
+	$my_row[]="No. of PC(All Cafes)";
+	$my_row[]="Billing Active PCs";
+	$my_row[]="Disk/Update Active PCs";
+	$my_row[]="Remarks";
+	$my_row[]="Sales 3 month";
+	$my_row[]="Sales 2 month";
+	$my_row[]="Sales 1 month";
+	$my_row[]="Average Sales";
+	$my_row[]="Province";
+	$data_array[]=$my_row;
+	$my_row=$empty_row;
+	$num_row++;
 
 
 while($row = mysql_fetch_array($Retailer_List)){
@@ -378,10 +481,13 @@ while($row = mysql_fetch_array($Retailer_List)){
 			echo "<td class='account'>".$cafe_pc."</td>";
 			echo "<td class='account'>".$cafe_pc."</td>";
 
-			//for exporting
-			$objPHPExcel->getActiveSheet()->SetCellValue('F'.$rowCount, $cafe_pc);
-			$objPHPExcel->getActiveSheet()->SetCellValue('G'.$rowCount, $cafe_pc);
-			$objPHPExcel->getActiveSheet()->SetCellValue('H'.$rowCount, $cafe_pc);
+			// //for exporting
+			// $objPHPExcel->getActiveSheet()->SetCellValue('F'.$rowCount, $cafe_pc);
+			// $objPHPExcel->getActiveSheet()->SetCellValue('G'.$rowCount, $cafe_pc);
+			// $objPHPExcel->getActiveSheet()->SetCellValue('H'.$rowCount, $cafe_pc);
+			$my_row[5]=$cafe_pc;
+			$my_row[6]=$cafe_pc;
+			$my_row[7]=$cafe_pc;
 		
 	}else{
 		while($numofpc = mysql_fetch_array($cafe_pc)){
@@ -389,10 +495,13 @@ while($row = mysql_fetch_array($Retailer_List)){
 			echo "<td class='account'>".$numofpc['bill_online']."</td>";
 			echo "<td class='account'>".$numofpc['disk_online']."</td>";
 
-			//for exporting
-			$objPHPExcel->getActiveSheet()->SetCellValue('F'.$rowCount, $numofpc['num_of_pc']);
-			$objPHPExcel->getActiveSheet()->SetCellValue('G'.$rowCount, $numofpc['bill_online']);
-			$objPHPExcel->getActiveSheet()->SetCellValue('H'.$rowCount, $numofpc['disk_online']);
+			// //for exporting
+			// $objPHPExcel->getActiveSheet()->SetCellValue('F'.$rowCount, $numofpc['num_of_pc']);
+			// $objPHPExcel->getActiveSheet()->SetCellValue('G'.$rowCount, $numofpc['bill_online']);
+			// $objPHPExcel->getActiveSheet()->SetCellValue('H'.$rowCount, $numofpc['disk_online']);
+			$my_row[5]=$numofpc['num_of_pc'];
+			$my_row[6]=$numofpc['bill_online'];
+			$my_row[7]=$numofpc['disk_online'];
 		}
 	}
 	echo "<td class='account'></td>";
@@ -404,32 +513,49 @@ while($row = mysql_fetch_array($Retailer_List)){
 	echo "<td class='account'>".$average."</td>";
 	echo "<td class='account'>".$row['location']."</td>";
 
-	// for exporting
-	$objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowCount, $row['id']);
-	$objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowCount, $row['first_name']);
-	$objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowCount, $row['last_name']);
-	$objPHPExcel->getActiveSheet()->SetCellValue('D'.$rowCount, $row['date_created']);
-	$objPHPExcel->getActiveSheet()->SetCellValue('E'.$rowCount, $giro_list);
-	// $objPHPExcel->getActiveSheet()->SetCellValue('F'.$rowCount, $numofpc['num_of_pc']);
-	// $objPHPExcel->getActiveSheet()->SetCellValue('G'.$rowCount, "Billing Active PCs");
-	// $objPHPExcel->getActiveSheet()->SetCellValue('H'.$rowCount, "Disk/Update Active PCs");
-	// $objPHPExcel->getActiveSheet()->SetCellValue('I'.$rowCount, "Remarks");
-	$objPHPExcel->getActiveSheet()->SetCellValue('J'.$rowCount, $row['3Month']);
-	$objPHPExcel->getActiveSheet()->SetCellValue('K'.$rowCount, $row['2Month']);
-	$objPHPExcel->getActiveSheet()->SetCellValue('L'.$rowCount, $row['1Month']);
-	$objPHPExcel->getActiveSheet()->SetCellValue('M'.$rowCount, $average);
-	$objPHPExcel->getActiveSheet()->SetCellValue('N'.$rowCount, $row['location']);
-	$rowCount++;
+	// // for exporting
+	// $objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowCount, $row['id']);
+	// $objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowCount, $row['first_name']);
+	// $objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowCount, $row['last_name']);
+	// $objPHPExcel->getActiveSheet()->SetCellValue('D'.$rowCount, $row['date_created']);
+	// $objPHPExcel->getActiveSheet()->SetCellValue('E'.$rowCount, $giro_list);
+	// // $objPHPExcel->getActiveSheet()->SetCellValue('F'.$rowCount, $numofpc['num_of_pc']);
+	// // $objPHPExcel->getActiveSheet()->SetCellValue('G'.$rowCount, "Billing Active PCs");
+	// // $objPHPExcel->getActiveSheet()->SetCellValue('H'.$rowCount, "Disk/Update Active PCs");
+	// // $objPHPExcel->getActiveSheet()->SetCellValue('I'.$rowCount, "Remarks");
+	// $objPHPExcel->getActiveSheet()->SetCellValue('J'.$rowCount, $row['3Month']);
+	// $objPHPExcel->getActiveSheet()->SetCellValue('K'.$rowCount, $row['2Month']);
+	// $objPHPExcel->getActiveSheet()->SetCellValue('L'.$rowCount, $row['1Month']);
+	// $objPHPExcel->getActiveSheet()->SetCellValue('M'.$rowCount, $average);
+	// $objPHPExcel->getActiveSheet()->SetCellValue('N'.$rowCount, $row['location']);
+	// $rowCount++;
+	$my_row[0]=$row['id'];
+	$my_row[1]=$row['first_name'];
+	$my_row[2]=$row['last_name'];
+	$my_row[3]=$row['date_created'];
+	$my_row[4]=$giro_list;
+	$my_row[9]=$row['3Month'];
+	$my_row[10]=$row['2Month'];
+	$my_row[11]=$row['1Month'];
+	$my_row[12]=$average;
+	$my_row[13]=$row['location'];
+	$data_array[]=$my_row;
+	$my_row=$empty_row;
+	$num_row++;
 }
 	//check_refund_status($row['id']);
 	echo "</td>";
 	echo "</tr>";
 	echo "</tbody></table><br><br><br>";	
 
-	// for exporting
-	$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
-	// $objWriter->save('output/'.$file_name);
-	$objWriter->save('output/output_file.xlsx');
-
+	// // for exporting
+	// $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+	// // $objWriter->save('output/'.$file_name);
+	// $objWriter->save('output/output_file.xlsx');
+	// print_r($data_array);
+	// echo $num_row;
 }
+
+	export_xlsx();
+	// print_r($data_array);
 ?>
