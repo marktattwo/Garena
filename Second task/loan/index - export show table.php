@@ -193,7 +193,6 @@ GROUP BY retailer_tab.id
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="codebase/dhtmlxcalendar.css"/>
 	<link rel="stylesheet" type="text/css" href="form.css">
-	<link rel="stylesheet" type="text/css" href="main.css">
 	<script src="codebase/dhtmlxcalendar.js"></script>
 	<style>
 		#calendar_input {
@@ -308,12 +307,19 @@ Refund Status :
 	<option value="REFUND">Refunded</option>
 	<option value="PENDING">Pending</option>
 </select> -->
-<input type="submit" name="submit" value="Search" id="search"> 
-<input type="submit" name="submit" value="Gen File" id="gen_file">
+<input type="submit" name="submit" value="Search"> 
+<input type="submit" name="submit" value="Gen File">
 </p>
 </form>
 </center>
 <br>
+
+
+
+<div id="export_div">
+      <?php echo "<a href='download.php?f=".$file_name.".xlsx'><div class='buttonlink'><p>Download</p></div></a>"; ?>
+</div>
+
 
 <?php
 
@@ -395,8 +401,25 @@ while($row = mysql_fetch_array($Retailer_List)){
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST['submit'] == 'Gen File') {
-//echo "<form onsubmit=\"CheckCheckboxes(this); return false;\">";
+echo "<form onsubmit=\"CheckCheckboxes(this); return false;\">";
+echo "<table id='my_table'><thead>";
+echo "<tr>";
+echo "<th width='30'>ID</th>";
+echo "<th width='120'>First Name</th>";
+echo "<th width='120'>Last Name</th>";
+echo "<th width='150'>Registation Date</th>";
+echo "<th width='120'>GIRO</th>";
+echo "<th width='120'>No. of PC(All Cafes)</th>";
+echo "<th width='120'>Billing Active PCs</th>";
+echo "<th width='90'>Disk/Update Active PCs</th>";
+echo "<th width='90'>Remarks</th>";
+echo "<th width='90'>Sales 3 month</th>";
+echo "<th width='90'>Sales 2 month</th>";
+echo "<th width='90'>Sales 1 month</th>";
+echo "<th width='90'>Average Sales</th>";
+echo "<th width='90'>Province</th>";
 
+echo "</tr></thead><tbody>";
 $totalsale = "0";
 $month = "3";
 
@@ -432,27 +455,51 @@ $rowCount++;
 
 
 while($row = mysql_fetch_array($Retailer_List)){
+
+	echo "<tr>";
+	echo "<td class='account' align='center'>".$row['id']."</td>";
+	echo "<td align='left'>".$row['first_name']."</td>";
+	echo "<td align='left'>".$row['last_name']."</td>";
+	
+	echo "<td class='account' align='left'>".$row['date_created']."</td>";
 	$giro_list = retailer_giro_data($conn_sg,$input["dbNameSg"],$row['id']);
+	
+	//$billing_pc = get_cafe_pc($row['id'],"BILL");
+	//$diskless_pc = get_cafe_pc($row['id'],"DISK");
+	
+	echo "<td class='account'>".$giro_list."</td>";
 	$cafelist = get_cafe_list($conn_sg,$input["dbNameSg"],$row['id']);
 	$cafe_pc = get_cafe_pc($conn_cft,$input["dbNameCFT"],$row['id'],$cafelist);
 	if($cafe_pc=="0"){
-		
+		echo "<td class='account'>".$cafe_pc."</td>";
+		echo "<td class='account'>".$cafe_pc."</td>";
+		echo "<td class='account'>".$cafe_pc."</td>";
+
 		//for exporting
 		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$rowCount, $cafe_pc);
 		$objPHPExcel->getActiveSheet()->SetCellValue('G'.$rowCount, $cafe_pc);
 		$objPHPExcel->getActiveSheet()->SetCellValue('H'.$rowCount, $cafe_pc);
-
+		
 	}else{
 		while($numofpc = mysql_fetch_array($cafe_pc)){
+			echo "<td class='account'>".$numofpc['num_of_pc']."</td>";
+			echo "<td class='account'>".$numofpc['bill_online']."</td>";
+			echo "<td class='account'>".$numofpc['disk_online']."</td>";
+
 			//for exporting
 			$objPHPExcel->getActiveSheet()->SetCellValue('F'.$rowCount, $numofpc['num_of_pc']);
 			$objPHPExcel->getActiveSheet()->SetCellValue('G'.$rowCount, $numofpc['bill_online']);
 			$objPHPExcel->getActiveSheet()->SetCellValue('H'.$rowCount, $numofpc['disk_online']);
 		}
 	}
-
+	echo "<td class='account'></td>";
+	echo "<td class='account'>".$row['3Month']."</td>";
+	echo "<td class='account'>".$row['2Month']."</td>";
+	echo "<td class='account'>".$row['1Month']."</td>";
 	$average = $row['AllMonth']/3;
 	$average = number_format((float)$average, 2, '.', '');
+	echo "<td class='account'>".$average."</td>";
+	echo "<td class='account'>".$row['location']."</td>";
 
 	// for exporting
 	$objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowCount, $row['id']);
@@ -471,17 +518,15 @@ while($row = mysql_fetch_array($Retailer_List)){
 	$objPHPExcel->getActiveSheet()->SetCellValue('N'.$rowCount, $row['location']);
 	$rowCount++;
 }
+	//check_refund_status($row['id']);
+	echo "</td>";
+	echo "</tr>";
+	echo "</tbody></table><br><br><br>";	
+
 	// for exporting
 	$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
 	$objWriter->save('output/'.$file_name.'.xlsx');
 }
 ?>
-
-  <?php 
-  	if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST['submit'] == 'Gen File'){
-  		echo "<div class='buttonlink'><a href='download.php?f=".$file_name.".xlsx'><p>Click Here To Download Your File</p></a></div>"; 
-  	}
-  ?>
-
 
 </html>

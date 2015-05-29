@@ -193,7 +193,6 @@ GROUP BY retailer_tab.id
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="codebase/dhtmlxcalendar.css"/>
 	<link rel="stylesheet" type="text/css" href="form.css">
-	<link rel="stylesheet" type="text/css" href="main.css">
 	<script src="codebase/dhtmlxcalendar.js"></script>
 	<style>
 		#calendar_input {
@@ -308,12 +307,19 @@ Refund Status :
 	<option value="REFUND">Refunded</option>
 	<option value="PENDING">Pending</option>
 </select> -->
-<input type="submit" name="submit" value="Search" id="search"> 
-<input type="submit" name="submit" value="Gen File" id="gen_file">
+<input type="submit" name="submit" value="Search"> 
+<input type="submit" name="submit" value="Gen File">
 </p>
 </form>
 </center>
 <br>
+
+
+
+<div id="export_div">
+      <?php echo "<a href='download.php?f=".$file_name.".xlsx'><div class='buttonlink'><p>Download</p></div></a>"; ?>
+</div>
+
 
 <?php
 
@@ -476,12 +482,5 @@ while($row = mysql_fetch_array($Retailer_List)){
 	$objWriter->save('output/'.$file_name.'.xlsx');
 }
 ?>
-
-  <?php 
-  	if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST['submit'] == 'Gen File'){
-  		echo "<div class='buttonlink'><a href='download.php?f=".$file_name.".xlsx'><p>Click Here To Download Your File</p></a></div>"; 
-  	}
-  ?>
-
 
 </html>
