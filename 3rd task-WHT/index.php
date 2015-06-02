@@ -350,7 +350,50 @@
 							ORDER BY
 							retailer_tab.first_name,retailer_tab.last_name,product_tab.category,product_tab.base_price") or die(mysql_error());
 
+					//init total
+					$id="";
+					$title="";
+					$first_name="";
+					$last_name="";
+					$sum_of_sum_price=0;
+					$sum_of_total_commission=0;
+					$sum_of_total_wht=0;
+
 					while($info = mysql_fetch_array( $data )) {       
+
+						if($id==NULL){
+							//data of new id
+				      $id=$info['identification'];
+				      $mobile=$info['mobile'];
+				      $title=$info['title'];
+				      $first_name=$info['first_name'];
+				      $last_name=$info['last_name'];
+						}
+
+						if($info['identification'] != $id && $id != NULL) {
+							//total of old id
+							$id="total".$id;
+			    		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowCount, $id);
+				      $objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowCount, $mobile);
+				      $objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowCount, $title);
+				      $objPHPExcel->getActiveSheet()->SetCellValue('D'.$rowCount, $first_name);
+				      $objPHPExcel->getActiveSheet()->SetCellValue('E'.$rowCount, $last_name);
+				      $objPHPExcel->getActiveSheet()->SetCellValue('L'.$rowCount, $sum_of_sum_price);
+				      $objPHPExcel->getActiveSheet()->SetCellValue('O'.$rowCount, $sum_of_total_commission);
+				      $objPHPExcel->getActiveSheet()->SetCellValue('P'.$rowCount, $sum_of_total_wht);
+				      $rowCount++;
+
+				      //data of new id
+				      $id=$info['identification'];
+				      $mobile=$info['mobile'];
+				      $title=$info['title'];
+				      $first_name=$info['first_name'];
+				      $last_name=$info['last_name'];
+				      $sum_of_sum_price=0;
+							$sum_of_total_commission=0;
+							$sum_of_total_wht=0;
+
+						}
 
 		    		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowCount, $info['identification']);
 			      $objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowCount, $info['mobile']);
@@ -373,7 +416,24 @@
 			      $objPHPExcel->getActiveSheet()->SetCellValue('O'.$rowCount, $total_commission);
 			      $objPHPExcel->getActiveSheet()->SetCellValue('P'.$rowCount, $total_wht);
 			      $rowCount++;
+
+			      //find total
+			      $sum_of_sum_price+=$info['Sum_Price'];
+						$sum_of_total_commission+=$total_commission;
+						$sum_of_total_wht+=$total_wht;
 				  }   
+
+				  if($id!=NULL){
+				  	$id="total".$id;
+		    		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowCount, $id);
+			      $objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowCount, $mobile);
+			      $objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowCount, $title);
+			      $objPHPExcel->getActiveSheet()->SetCellValue('D'.$rowCount, $first_name);
+			      $objPHPExcel->getActiveSheet()->SetCellValue('E'.$rowCount, $last_name);
+			      $objPHPExcel->getActiveSheet()->SetCellValue('L'.$rowCount, $sum_of_sum_price);
+			      $objPHPExcel->getActiveSheet()->SetCellValue('O'.$rowCount, $sum_of_total_commission);
+			      $objPHPExcel->getActiveSheet()->SetCellValue('P'.$rowCount, $sum_of_total_wht);
+		    	}
 
 				  $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
 	      	$objWriter->save('output/'.$file_name);
