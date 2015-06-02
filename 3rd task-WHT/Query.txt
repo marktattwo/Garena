@@ -1,0 +1,25 @@
+SELECT
+
+retailer_tab.identification,
+retailer_tab.mobile,
+retailer_tab.title,
+retailer_tab.first_name,
+retailer_tab.last_name,
+product_tab.`name` AS Product_Name,
+product_tab.category,
+product_tab.category_group,
+purchase_tab.base_price AS Base_Price,
+purchase_tab.price AS Discount_Price,
+Count(purchase_tab.product_id) AS Count,
+Sum(purchase_tab.price) AS Sum_Price
+
+FROM
+purchase_tab
+INNER JOIN product_tab ON product_tab.id = purchase_tab.product_id
+INNER JOIN retailer_tab ON retailer_tab.id = purchase_tab.retailer_id
+LEFT JOIN refund_tab ON refund_tab.purchase_id = purchase_tab.id
+WHERE (CONVERT_TZ(purchase_tab.time_stamp,'+00:00','+07:00') BETWEEN '2015-05-01 00:00:00' AND '2015-05-10 23:59:59') AND (refund_tab.purchase_id IS NULL) 
+GROUP BY
+purchase_tab.retailer_id,product_id,purchase_tab.price
+ORDER BY
+retailer_tab.first_name,retailer_tab.last_name,product_tab.category,product_tab.base_price

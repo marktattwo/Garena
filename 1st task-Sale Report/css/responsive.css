@@ -1,0 +1,135 @@
+body {
+  min-width: 1000px;
+}
+
+h1 {
+  text-align: center;
+  color: #2E353B;
+}
+
+a {
+  text-decoration: none;
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
+}
+
+a p {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+#body_div {
+  float: left;
+  width: 100%;
+}
+
+#form_div {
+  text-align: center;
+}
+
+#start_date {
+  margin-right: 30px;
+  margin-top: 30px;
+}
+
+#end_date {
+  margin-right: 30px;
+  margin-top: 30px;
+}
+
+#product {
+  margin-right: 30px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+#search {
+  border-radius: 5px;
+  border: 0;
+  width: 80px;
+  height:30px;
+  font-family: Tahoma;
+  background: #39ADD1;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-right: 5px;
+}
+
+#gen_file {
+  border-radius: 5px;
+  border: 0;
+  width: 80px;
+  height:30px;
+  font-family: Tahoma;
+  background: #5FCF80;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+#detail {
+  width: 100%;
+  text-align: center;
+}
+
+.buttonlink{
+  border-radius: 5px;
+  width: 300px;
+  height: 33px;
+  background: #E15258;
+  color:#fff;
+  margin: 0 auto;
+  font-family: Tahoma;
+  text-align: center;
+}
+
+.buttonlink p {
+  padding-top: 6px;
+  font-weight: bold;
+}
+
+@media screen and (min-width: 1355px) {
+  #date_div {
+    float: left;
+  }
+
+  #product_div {
+    float: left;
+  }
+  #form_div {
+    width: 1285px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 1354px) {
+  
+  #date_div {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  #product_div {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  #product {
+    margin-bottom: 10px;
+  }
+
+  #search {
+    margin-bottom: 10px;
+  }
+
+  #gen_file {
+    margin-bottom: 10px;
+  }
+}
+
