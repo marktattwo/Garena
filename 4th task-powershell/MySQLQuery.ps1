@@ -6,7 +6,7 @@ $MySQLHost = '112.121.158.92'
 $ConnectionString = "server=" + $MySQLHost + ";port=6606;uid=" + $MySQLAdminUserName + ";pwd=" + $MySQLAdminPassword + ";database="+$MySQLDatabase
 
 
-$Query = "SELECT * FROM retailer_tab"
+$Query = "SELECT * FROM cafe_tab"
 
 Try {
   [void][System.Reflection.Assembly]::LoadWithPartialName("MySql.Data")
